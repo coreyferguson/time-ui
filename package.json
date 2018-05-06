@@ -17,6 +17,7 @@
     "@babel/preset-react": "^7.0.0-beta.35",
     "asciify": "^1.3.5",
     "aws-sdk": "^2.185.0",
+    "axios": "^0.18.0",
     "babel-loader": "^8.0.0-beta.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",

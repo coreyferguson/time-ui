@@ -55,7 +55,9 @@ module.exports = {
 
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
+    host: 'local.time.overattribution.com',
+    https: true
   }
 
 };

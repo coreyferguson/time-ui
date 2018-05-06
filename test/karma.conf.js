@@ -92,7 +92,9 @@ module.exports = function(config) {
         'react/lib/ExecutionEnvironment': true,    // pre-existing at enzyme 2.8.0
         'react/lib/ReactContext': true,            // pre-existing at enzyme 2.8.0
         'react-dom/test-utils': true,
-        'react-test-renderer/shallow': true
+        'react-test-renderer/shallow': true,
+        'axios': true,
+        'moment': true
       }
     }
 
