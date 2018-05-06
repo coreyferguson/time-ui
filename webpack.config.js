@@ -1,57 +1,25 @@
 
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const webpack = require('webpack');
 
-module.exports = {
-  entry: './src/index.js',
+const config = {
 
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js'
+  module: {
+    rules: [
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
+    ]
   },
 
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Time',
-      template: 'static/index.html'
-    })
+      template: './src/index.html'
+    }),
+    new DynamicCdnWebpackPlugin()
   ],
-
-  module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader'
-      }
-    }, {
-      test: /\.scss$/,
-      use: [{
-        loader: "style-loader" // creates style nodes from JS strings
-      }, {
-        loader: "css-loader" // translates CSS into CommonJS
-      }, {
-        loader: "sass-loader" // compiles Sass to CSS
-      }]
-    }, {
-      test: /\.html$/,
-      use: [
-        {
-          loader: 'html-loader'
-        }
-      ]
-    }]
-  },
-
-  externals: {
-   'react': 'React',
-   'react-dom': 'ReactDOM',
-   'react-router': 'ReactRouter',
-   'axios': true,
-   'moment': true
-  },
 
   devtool: 'inline-source-map',
   devServer: {
@@ -61,3 +29,5 @@ module.exports = {
   }
 
 };
+
+module.exports = config;
