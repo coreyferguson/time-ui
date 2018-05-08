@@ -3,14 +3,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const webpackModule = require('./config/webpackModule');
 
 const config = {
 
-  module: {
-    rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
-    ]
-  },
+  module: webpackModule,
 
   plugins: [
     new CleanWebpackPlugin(['dist']),

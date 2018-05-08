@@ -1,8 +1,9 @@
 
 const path = require('path');
+const webpackModule = require('../config/webpackModule');
 
-const environment = process.env.NODE_ENV || 'dev';
-const envConfig = path.resolve(__dirname, `../config/${environment}.json`);
+// const environment = process.env.NODE_ENV || 'dev';
+// const envConfig = path.resolve(__dirname, `../config/${environment}.json`);
 
 module.exports = function(config) {
   config.set({
@@ -61,41 +62,21 @@ module.exports = function(config) {
 
     webpack: {
       devtool: 'cheap-module-eval-source-map',
-      module: {
-        rules: [
-          {
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            use: {
-              loader: 'babel-loader'
-            }
-          },
-          {
-            test: /\.scss$/,
-            use: [{
-                loader: "style-loader" // creates style nodes from JS strings
-            }, {
-                loader: "css-loader" // translates CSS into CommonJS
-            }, {
-                loader: "sass-loader" // compiles Sass to CSS
-            }]
-          }
-        ]
-      },
-      resolve: {
-        alias: {
-          config: envConfig,
-        },
-      },
-      externals: {
-        'react/addons': true,                      // pre-existing at enzyme 2.8.0
-        'react/lib/ExecutionEnvironment': true,    // pre-existing at enzyme 2.8.0
-        'react/lib/ReactContext': true,            // pre-existing at enzyme 2.8.0
-        'react-dom/test-utils': true,
-        'react-test-renderer/shallow': true,
-        'axios': true,
-        'moment': true
-      }
+      module: webpackModule,
+      // resolve: {
+      //   alias: {
+      //     config: envConfig,
+      //   },
+      // },
+      // externals: {
+      //   'react/addons': true,                      // pre-existing at enzyme 2.8.0
+      //   'react/lib/ExecutionEnvironment': true,    // pre-existing at enzyme 2.8.0
+      //   'react/lib/ReactContext': true,            // pre-existing at enzyme 2.8.0
+      //   'react-dom/test-utils': true,
+      //   'react-test-renderer/shallow': true,
+      //   'axios': true,
+      //   'moment': true
+      // }
     }
 
   });
