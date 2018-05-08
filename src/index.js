@@ -4,10 +4,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Route, Router } from 'react-router';
-import { Switch } from 'react-router-dom';
+import { Route, Router, Switch } from 'react-router-dom';
 
-import Authorize from './Authorize';
+import Authorize from './session/views/OAuthAuthorize';
 import Root from './Root';
 import PageNotFound from './PageNotFound';
 

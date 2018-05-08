@@ -17,8 +17,8 @@ export function getSessionResponse(session) {
 export function getSession() {
   return dispatch => {
     dispatch(getSessionRequest());
-    // return service.findMe().then(response => {
-    //   dispatch(getSessionResponse(response.data));
-    // });
+    return service.findMe().then(response => {
+      dispatch(getSessionResponse(response.data));
+    });
   };
 }
