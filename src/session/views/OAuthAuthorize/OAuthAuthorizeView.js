@@ -1,16 +1,11 @@
 
 import React from 'react';
+import Container from '../../../container/views/Container';
 
-export default class AuthorizeView extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
+export default function AuthorizeView(props) {
+  return (
+    <Container>
       <h1>Authorize!!</h1>
-    );
-  }
-
+    </Container>
+  );
 }

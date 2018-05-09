@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router-dom';
 
 import Authorize from './session/views/OAuthAuthorize';
-import Root from './Root';
+import Home from './Home';
 import PageNotFound from './PageNotFound';
 
 // import reducers from './reducers' // Or wherever you keep your reducers
@@ -21,7 +21,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Switch>
-        <Route exact path='/' component={Root} />
+        <Route exact path='/' component={Home} />
         <Route path='/authorize' component={Authorize} />
         <Route component={PageNotFound} />
       </Switch>
