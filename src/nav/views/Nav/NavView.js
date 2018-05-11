@@ -22,5 +22,5 @@ export default class NavView extends React.Component {
 }
 
 NavView.propTypes = {
-  onMount: PropTypes.function
+  onMount: PropTypes.func
 };

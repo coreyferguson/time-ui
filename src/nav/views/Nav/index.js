@@ -1,3 +1,5 @@
 
 import View from './NavView';
-export default View;
+import connect from './NavReduxConnect';
+
+export default connect(View);

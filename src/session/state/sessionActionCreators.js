@@ -1,5 +1,6 @@
 
 import actions from './sessionActions';
+import service from '../service/sessionService';
 
 export function getSessionRequest() {
   return {

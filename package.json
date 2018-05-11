@@ -44,6 +44,7 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "react-test-renderer": "^16.3.2",
     "redux": "^4.0.0",
+    "redux-thunk": "^2.2.0",
     "s3": "^4.4.0",
     "sinon": "^5.0.7",
     "sinon-chai": "^3.0.0",
