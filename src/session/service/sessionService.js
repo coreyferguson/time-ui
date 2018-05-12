@@ -13,9 +13,6 @@ export class SessionService {
     return this._axios({
       method: 'GET',
       url: this._url,
-      params: {
-        redirectUrl: window.location.href
-      },
       withCredentials: true
     });
   }
