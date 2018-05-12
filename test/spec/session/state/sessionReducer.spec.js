@@ -10,28 +10,56 @@ describe('sessionReducer unit test', () => {
     const state = reducer(undefined, {});
     expect(state).to.eql({
       loading: true,
-      data: undefined
+      authenticated: false,
+      data: {}
     });
   });
 
   it('GET_SESSION_REQUEST', () => {
     const stateBefore = freeze({
       loading: false,
-      data: undefined
+      data: {}
     });
     const stateAfter = reducer(stateBefore, actionCreators.getSessionRequest());
     expect(stateAfter.loading).to.be.true;
+    expect(stateAfter.authenticated).to.be.false;
   });
 
-  it('GET_SESSION_RESPONSE', () => {
+  it('GET_SESSION_REQUEST already authenticated', () => {
+    const stateBefore = freeze({
+      loading: false,
+      data: {
+        user: { id: 'userIdValue' }
+      }
+    });
+    const stateAfter = reducer(stateBefore, actionCreators.getSessionRequest());
+    expect(stateAfter.loading).to.be.true;
+    expect(stateAfter.authenticated).to.be.true;
+  });
+
+  it('GET_SESSION_RESPONSE successfully authenticated', () => {
     const stateBefore = freeze({
       loading: true,
-      data: undefined
+      data: {
+        user: { id: 'userIdValue' }
+      }
     });
-    const data = { authenticated: true };
+    const data = {
+      user: { id: 'userIdValue' }
+    };
     const stateAfter = reducer(stateBefore, actionCreators.getSessionResponse(data));
     expect(stateAfter.loading).to.be.false;
-    expect(stateAfter.data.authenticated).to.be.true;
+    expect(stateAfter.authenticated).to.be.true;
+  });
+
+  it('GET_SESSION_RESPONSE not authenticated', () => {
+    const stateBefore = freeze({
+      loading: true
+    });
+    const data = {};
+    const stateAfter = reducer(stateBefore, actionCreators.getSessionResponse(data));
+    expect(stateAfter.loading).to.be.false;
+    expect(stateAfter.authenticated).to.be.false;
   });
 
 });
