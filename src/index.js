@@ -1,27 +1,30 @@
 
-import createHistory from 'history/createHashHistory';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { Route, Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
 
-import Authorize from './session/views/OAuthAuthorize';
 import Home from './Home';
 import PageNotFound from './PageNotFound';
+import OAuthCallback from './session/views/OAuthCallback';
 
 import reducers from './reducers';
 
-const history = createHistory();
-const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+const store = createStore(
+  reducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(thunkMiddleware)
+);
 
+// Initialize UI
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>
+    <Router>
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/authorize' component={Authorize} />
+        <Route path='/oauth_callback' component={OAuthCallback} />
         <Route component={PageNotFound} />
       </Switch>
     </Router>

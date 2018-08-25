@@ -2,25 +2,37 @@
 import actions from './sessionActions';
 
 const initialState = {
-  loading: true,
-  authenticated: false,
-  data: {}
+  authenticated: false
 };
 
 export default function AuthorizeReducer(state=initialState, action) {
-  switch (action.type) {
-    case actions.GET_SESSION_REQUEST:
-      return Object.assign({}, state, {
-        authenticated: state.data.user != null,
-        loading: true
-      });
-    case actions.GET_SESSION_RESPONSE:
-      return Object.assign({}, state, {
-        loading: false,
-        authenticated: action.session.user != null,
-        data: action.session
-      });
-    default:
-      return state;
+  console.log('state before', state);
+  console.log('action', action);
+  if (action.type === actions.GET_SESSION) {
+    return Object.assign({}, state, {
+      authenticated: !!action.accessTokenExpiry,
+      name: action.name,
+      picture: action.picture
+    });
+  } else if (action.type === actions.LOG_OUT) {
+    console.log('A');
+    return Object.assign({}, initialState);
+  } else {
+    console.log('B');
+    return state;
   }
+  // switch (action.type) {
+  //   case actions.GET_SESSION:
+  //     return Object.assign({}, state, {
+  //       authenticated: !!action.accessTokenExpiry,
+  //       name: action.name,
+  //       picture: action.picture
+  //     });
+  //   case action.LOG_OUT:
+  //     console.log('A');
+  //     return Object.assign({}, initialState);
+  //   default:
+  //     console.log('B');
+  //     return state;
+  // }
 }

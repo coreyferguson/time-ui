@@ -68,11 +68,11 @@ function applyWebsiteHosting() {
     s3.putBucketWebsite({
       Bucket: bucketName,
       WebsiteConfiguration: {
-        ErrorDocument: {
-          Key: 'error.html'
-        },
         IndexDocument: {
           Suffix: 'index.html'
+        },
+        ErrorDocument: {
+          Key: 'index.html'
         }
       }
     }, (err, data) => {
