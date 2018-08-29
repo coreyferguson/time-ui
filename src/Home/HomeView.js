@@ -8,6 +8,7 @@ export default function HomeView(props) {
     <Container>
       <div>
         {props.authenticated && <Timers />}
+        {!props.authenticated && <h1>Log in to see your timers</h1>}
       </div>
     </Container>
   );
