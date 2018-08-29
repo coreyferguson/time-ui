@@ -1,3 +1,4 @@
 
 import View from './HomeView';
-export default View;
+import connect from './HomeReduxConnect';
+export default connect(View);

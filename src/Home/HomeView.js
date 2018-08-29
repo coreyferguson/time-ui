@@ -1,11 +1,14 @@
 
 import React from 'react';
 import Container from '../container/views/Container';
+import Timers from '../timers/views/Timers';
 
 export default function HomeView(props) {
   return (
     <Container>
-      <h1>Home Page</h1>
+      <div>
+        {props.authenticated && <Timers />}
+      </div>
     </Container>
   );
 }

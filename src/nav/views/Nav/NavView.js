@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 export default class NavView extends React.Component {
@@ -29,7 +28,6 @@ export default class NavView extends React.Component {
   }
 
   render() {
-    console.log('render', this.props);
     return (
       <nav>
         <div className='nav-wrapper'>
