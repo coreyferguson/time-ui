@@ -33,3 +33,69 @@ export function getUserTimers() {
     });
   };
 }
+
+function getUserTimerRequest() {
+  return { type: actions.GET_TIMER_REQUEST };
+}
+
+function getUserTimerResponse(userTimer) {
+  return {
+    type: actions.GET_TIMER_RESPONSE,
+    userTimer
+  };
+}
+
+function getUserTimerError() {
+  return { type: actions.GET_TIMER_ERROR };
+}
+
+export function getUserTimer(timerId) {
+  return dispatch => {
+    dispatch(getUserTimerRequest());
+    axios({
+      method: 'GET',
+      url: 'https://time-api.overattribution.com/timers',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    }).then(response => {
+      const filtered = response.data.userTimers
+        .filter(userTimer => userTimer.timerId === timerId);
+      if (filtered.length !== 1) dispatch(getUserTimerError());
+      else dispatch(getUserTimerResponse(filtered[0]));
+    }).catch(err => {
+      dispatch(getUserTimerError());
+    });
+  };
+}
+
+function saveTimerRequest() {
+  return { type: actions.SAVE_TIMER_REQUEST };
+}
+
+function saveTimerResponse(userTimer) {
+  return { type: actions.SAVE_TIMER_RESPONSE, userTimer };
+}
+
+function saveTimerError() {
+  return { type: actions.SAVE_TIMER_ERROR };
+}
+
+export function saveTimer(data) {
+  return dispatch => {
+    dispatch(saveTimerRequest());
+    axios({
+      method: 'POST',
+      url: 'https://time-api.overattribution.com/timers',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      },
+      data
+    }).then(response => {
+      dispatch(saveTimerResponse(data));
+    }).catch(err => {
+      dispatch(saveTimerError());
+    });
+
+  };
+}

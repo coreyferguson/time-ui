@@ -9,6 +9,8 @@ import thunkMiddleware from 'redux-thunk';
 import Home from './Home';
 import PageNotFound from './PageNotFound';
 import OAuthCallback from './session/views/OAuthCallback';
+import TimerAdd from './timers/views/TimerAdd';
+import TimerEdit from './timers/views/TimerEdit';
 
 import reducers from './reducers';
 
@@ -25,6 +27,8 @@ ReactDOM.render(
       <Switch>
         <Route exact path='/' component={Home} />
         <Route path='/oauth_callback' component={OAuthCallback} />
+        <Route path='/addtimer' component={TimerAdd} />
+        <Route path='/edittimer' component={TimerEdit} />
         <Route component={PageNotFound} />
       </Switch>
     </Router>

@@ -4,21 +4,36 @@ import actions from './timerActions';
 const initialState = {
   loading: false,
   error: false,
-  userTimers: undefined
+  userTimer: undefined
 };
 
 export default function TimerReducer(state=initialState, action) {
-  if (action.type === actions.GET_TIMERS_REQUEST) {
+  if (action.type === actions.GET_TIMER_REQUEST) {
     return Object.assign({}, state, {
       loading: true
     });
-  } else if (action.type === actions.GET_TIMERS_RESPONSE) {
+  } else if (action.type === actions.GET_TIMER_RESPONSE) {
     return Object.assign({}, state, {
       loading: false,
       error: false,
-      userTimers: action.userTimers
+      userTimer: action.userTimer
     });
-  } else if (action.type === actions.GET_TIMERS_ERROR) {
+  } else if (action.type === actions.GET_TIMER_ERROR) {
+    return Object.assign({}, state, {
+      loading: false,
+      error: true
+    });
+  } else if (action.type === actions.SAVE_TIMER_REQUEST) {
+    return Object.assign({}, state, {
+      loading: true
+    });
+  } else if (action.type === actions.SAVE_TIMER_RESPONSE) {
+    return Object.assign({}, state, {
+      loading: false,
+      error: false,
+      userTimer: Object.assign({}, state.userTimer, action.userTimer)
+    });
+  } else if (action.type === actions.SAVE_TIMER_ERROR) {
     return Object.assign({}, state, {
       loading: false,
       error: true
