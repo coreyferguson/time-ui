@@ -41,7 +41,7 @@ export default class TimerAddView extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.onSubmit({
-      id: this.state.timerId,
+      timerId: this.state.timerId,
       name: this.state.timerName
     });
   }
