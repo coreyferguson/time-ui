@@ -43,10 +43,29 @@ export default class TimerListView extends React.Component {
     );
   }
 
+  renderHeader() {
+    return (
+      <div className='row'>
+        <div className='col s6'>
+          <h4>Timers</h4>
+        </div>
+        <div className='col s6' style={{marginTop: '1em'}}>
+          <div className='right-align'>
+            <a
+                href='/addtimer'
+                className="btn-floating btn-large waves-effect waves-light red">
+              <i className="material-icons">add</i>
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
-        <h1>Timers</h1>
+        {this.renderHeader()}
         {this.renderLoading()}
         {this.renderUserTimers()}
       </div>

@@ -112,11 +112,11 @@ function getUserTimerLogError() {
   return { type: actions.GET_TIMER_LOGS_ERROR };
 }
 
-export function getUserTimerLog() {
+export function getUserTimerLog(timerId) {
   return dispatch => {
     dispatch(getUserTimerLogRequest());
     axios({
-      url: 'https://time-api.overattribution.com/timers/study/logs',
+      url: `https://time-api.overattribution.com/timers/${timerId}/logs`,
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('access_token')}`

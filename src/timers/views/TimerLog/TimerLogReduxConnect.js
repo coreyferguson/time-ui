@@ -9,8 +9,8 @@ const mapStateToProps = ({ timerLogs }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onMount: () => {
-      dispatch(getUserTimerLog());
+    onMount: timerId => {
+      dispatch(getUserTimerLog(timerId));
     }
   };
 };

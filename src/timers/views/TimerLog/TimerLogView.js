@@ -4,35 +4,52 @@ import React from 'react';
 import Container from '../../../container/views/Container';
 import PropTypes from 'prop-types';
 import Loading from '../../../Loading/IndeterminateLinear';
-// import Chart from 'chart.js';
-// import moment from 'moment';
 
 export default class TimerLogView extends React.Component {
 
   constructor(props) {
     super(props);
-    this.heatMap = React.createRef();
+    this.allTimeBarChart = React.createRef();
   }
 
   componentDidMount() {
-    if (this.props.onMount) this.props.onMount();
-    const ctx = this.heatMap.current.getContext('2d');
+    this.timerId = this.getParameterByName('id');
+    if (this.props.onMount) this.props.onMount(this.timerId);
+    const ctx = this.allTimeBarChart.current.getContext('2d');
     const data = {
       labels: [],
       datasets: [{
-        label: 'Hours',
+        label: 'hours',
         data: [],
         backgroundColor: 'rgba(255, 99, 132, 0.75)'
       }]
     };
     this.barChart = new Chart(ctx, {
       type: 'bar',
-      data
+      data,
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }],
+          xAxes: [{
+            gridLines: {
+              display: false
+            }
+          }]
+        },
+        legend: {
+          position: 'none'
+        }
+      }
     });
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.userTimerLogs && prevProps.userTimerLogs !== this.props.userTimerLogs) {
+    if (this.props.userTimerLogs &&
+        prevProps.userTimerLogs !== this.props.userTimerLogs) {
       const m = {};
       let first;
       this.props.userTimerLogs.forEach(log => {
@@ -52,7 +69,7 @@ export default class TimerLogView extends React.Component {
       let start, stop;
       let current = first;
       const today = moment();
-      while (current.isBefore(today)) {
+      while (current && current.isBefore(today)) {
         const label = current.format('YYYY-MM-DD');
         labels.push(label);
         data.push(m[label] || 0);
@@ -71,13 +88,32 @@ export default class TimerLogView extends React.Component {
   render() {
     return (
       <Container>
-        <div>
-          <h1>Timer Log</h1>
+        <div className='row'>
+          <h4>{this.timerId}</h4>
           {this.renderLoading()}
-          <canvas ref={this.heatMap} width="100%" height="30%"></canvas>
+        </div>
+        <div className='row'>
+          <div className='col s12'>
+            <h5>All Time - Daily</h5>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col s12'>
+            <canvas ref={this.allTimeBarChart}></canvas>
+          </div>
         </div>
       </Container>
     );
+  }
+
+  getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
 }
