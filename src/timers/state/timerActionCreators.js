@@ -99,3 +99,32 @@ export function saveTimer(data) {
 
   };
 }
+
+function getUserTimerLogRequest() {
+  return { type: actions.GET_TIMER_LOGS_REQUEST };
+}
+
+function getUserTimerLogResponse(userTimerLogs) {
+  return { type: actions.GET_TIMER_LOGS_RESPONSE, userTimerLogs };
+}
+
+function getUserTimerLogError() {
+  return { type: actions.GET_TIMER_LOGS_ERROR };
+}
+
+export function getUserTimerLog() {
+  return dispatch => {
+    dispatch(getUserTimerLogRequest());
+    axios({
+      url: 'https://time-api.overattribution.com/timers/study/logs',
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    }).then(response => {
+      dispatch(getUserTimerLogResponse(response.data.userTimerLogs));
+    }).catch(err => {
+      dispatch(getUserTimerLogError());
+    });
+  };
+}

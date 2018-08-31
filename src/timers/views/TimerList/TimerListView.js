@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IndeterminateLinear from '../../../Loading/IndeterminateLinear';
 
-export default class TimerView extends React.Component {
+export default class TimerListView extends React.Component {
 
   componentDidMount() {
     if (this.props.onMount) this.props.onMount();
@@ -17,13 +17,19 @@ export default class TimerView extends React.Component {
     if (!this.props.userTimers) return;
     const items = this.props.userTimers.map(userTimer => {
       return (
-        <li className='collection-item row'>
-          <div className='col s1'>{userTimer.name}</div>
+        <li key={userTimer.timerId} className='collection-item row'>
+          <div className='col s1'>
+            <a href={`/timerLog?id=${userTimer.timerId}`}>
+              {userTimer.name}
+            </a>
+          </div>
           <div className='col s11'>
             <div className='right-align'>
-              <a key={userTimer.timerId}
-                  href={`/edittimer?id=${userTimer.timerId}`}>
-                  <i class="material-icons">edit</i>
+              <a href={`/timerLog?id=${userTimer.timerId}`}>
+                  <i className="material-icons">history</i>
+              </a>
+              <a href={`/edittimer?id=${userTimer.timerId}`}>
+                  <i className="material-icons">edit</i>
               </a>
             </div>
           </div>
@@ -49,7 +55,7 @@ export default class TimerView extends React.Component {
 
 }
 
-TimerView.propTypes = {
+TimerListView.propTypes = {
   onMount: PropTypes.func
 };
 
