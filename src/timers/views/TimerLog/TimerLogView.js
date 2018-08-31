@@ -4,8 +4,8 @@ import React from 'react';
 import Container from '../../../container/views/Container';
 import PropTypes from 'prop-types';
 import Loading from '../../../Loading/IndeterminateLinear';
-import Chart from 'chart.js';
-import moment from 'moment';
+// import Chart from 'chart.js';
+// import moment from 'moment';
 
 export default class TimerLogView extends React.Component {
 
