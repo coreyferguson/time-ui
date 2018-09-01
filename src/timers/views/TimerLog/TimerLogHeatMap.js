@@ -3,6 +3,32 @@ import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import './heatMapStyles.scss';
 
+export default function TimerLogHeatMap(props) {
+  const yearStart = new Date(moment().add(-365, 'days').format('YYYY-MM-DD'));
+  const today = new Date(moment().format('YYYY-MM-DD'));
+  const metadata = generateMetadata(props.userTimerLogs);
+  const heatMapClassForValue = heatMapClassForValueGenerator(metadata);
+  return (
+    <div>
+      <div className='row'>
+        <div className='col s12'>
+          <h5>Last Year - Heat Map</h5>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col s12'>
+          <CalendarHeatmap
+            startDate={yearStart}
+            endDate={today}
+            values={metadata.data}
+            classForValue={heatMapClassForValue}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function generateMetadata(userTimerLogs) {
   const metadata = {
     map: new Map(),
@@ -58,19 +84,4 @@ function heatMapClassForValueGenerator(metadata) {
     else if (count >= g2 && count < g3) return 'color-3';
     else if (count >= g3 && count <= high) return 'color-4';
   };
-}
-
-export default function TimerLogHeatMap(props) {
-  const yearStart = new Date(moment().add(-365, 'days').format('YYYY-MM-DD'));
-  const today = new Date(moment().format('YYYY-MM-DD'));
-  const metadata = generateMetadata(props.userTimerLogs);
-  const heatMapClassForValue = heatMapClassForValueGenerator(metadata);
-  return (
-    <CalendarHeatmap
-      startDate={yearStart}
-      endDate={today}
-      values={metadata.data}
-      classForValue={heatMapClassForValue}
-    />
-  );
 }
