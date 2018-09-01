@@ -2,10 +2,7 @@
 import { connect } from 'react-redux'
 import { getUserTimerLog } from '../../state/timerActionCreators';
 
-const mapStateToProps = ({ timerLogs }) => {
-  console.log(timerLogs);
-  return timerLogs;
-};
+const mapStateToProps = ({ timerLogs }) => timerLogs;
 
 const mapDispatchToProps = dispatch => {
   return {

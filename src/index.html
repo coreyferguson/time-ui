@@ -7,6 +7,80 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.min.js"></script>
+    <style>
+      /*
+       * react-calendar-heatmap styles
+       *
+       * All of the styles in this file are optional and configurable!
+       * The github and gitlab color scales are provided for reference.
+       */
+
+      .react-calendar-heatmap text {
+        font-size: 10px;
+        fill: #aaa;
+      }
+
+      .react-calendar-heatmap .react-calendar-heatmap-small-text {
+        font-size: 5px;
+      }
+
+      .react-calendar-heatmap rect:hover {
+        stroke: #555;
+        stroke-width: 1px;
+      }
+
+      /*
+       * Default color scale
+       */
+
+      .react-calendar-heatmap .color-empty {
+        fill: #eeeeee;
+      }
+
+      .react-calendar-heatmap .color-filled {
+        fill: #8cc665;
+      }
+
+      /*
+       * Github color scale
+       */
+
+      .react-calendar-heatmap .color-github-0 {
+        fill: #eee;
+      }
+      .react-calendar-heatmap .color-github-1 {
+        fill: #ef9a9a;
+      }
+      .react-calendar-heatmap .color-github-2 {
+        fill: #ef5350;
+      }
+      .react-calendar-heatmap .color-github-3 {
+        fill: #e53935;
+      }
+      .react-calendar-heatmap .color-github-4 {
+        fill: #b71c1c;
+      }
+
+      /*
+       * Gitlab color scale
+       */
+
+      .react-calendar-heatmap .color-gitlab-0 {
+        fill: #ededed;
+      }
+      .react-calendar-heatmap .color-gitlab-1 {
+        fill: #acd5f2;
+      }
+      .react-calendar-heatmap .color-gitlab-2 {
+        fill: #7fa8d1;
+      }
+      .react-calendar-heatmap .color-gitlab-3 {
+        fill: #49729b;
+      }
+      .react-calendar-heatmap .color-gitlab-4 {
+        fill: #254e77;
+      }
+    </style>
   </head>
 
   <body>
