@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Loading from '../../../Loading/IndeterminateLinear';
 import TimerLogHeatMap from './TimerLogHeatMap';
 import TimerLogWeekBarChart from './TimerLogWeekBarChart';
+import TimerLogLongestStreak from './TimerLogLongestStreak';
 
 export default class TimerLogView extends React.Component {
 
@@ -30,6 +31,7 @@ export default class TimerLogView extends React.Component {
             {this.renderLoading()}
           </div>
           <TimerLogHeatMap userTimerLogs={this.props.userTimerLogs} />
+          <TimerLogLongestStreak userTimerLogs={this.props.userTimerLogs} />
           <TimerLogWeekBarChart userTimerLogs={this.props.userTimerLogs} />
         </div>
       </Container>
