@@ -4,16 +4,13 @@ import React from 'react';
 import Container from '../../../container/views/Container';
 import PropTypes from 'prop-types';
 import Loading from '../../../Loading/IndeterminateLinear';
-import CalendarHeatmap from 'react-calendar-heatmap';
+import TimerLogHeatMap from './TimerLogHeatMap';
 
 export default class TimerLogView extends React.Component {
 
   constructor(props) {
     super(props);
     this.allTimeBarChart = React.createRef();
-    this.yearStart = new Date(moment().add(-365, 'days').format('YYYY-MM-DD'));
-    this.today = new Date(moment().format('YYYY-MM-DD'));
-    this.heatMapClassForValue = this.heatMapClassForValue.bind(this);
   }
 
   componentDidMount() {
@@ -89,50 +86,6 @@ export default class TimerLogView extends React.Component {
     this.barChart.update();
   }
 
-  heatMapValues() {
-    if (!this.props.userTimerLogs) return [];
-    const m = new Map();
-    let start, stop;
-    this.props.userTimerLogs.forEach(log => {
-      if (!start && log.action === 'start') {
-        start = moment(log.time);
-      } else if (start && log.action === 'stop') {
-        stop = moment(log.time);
-        let diff = moment.duration(stop.diff(start)).as('minutes');
-        const label = log.time.slice(0, 10);
-        m.set(label, diff);
-        start = undefined;
-      }
-    });
-    const data = [];
-    this.heatMapLow = Number.MAX_VALUE;
-    this.heatMapHigh = Number.MIN_VALUE;
-    for (let kv of m) {
-      this.heatMapLow = Math.min(this.heatMapLow, kv[1]);
-      this.heatMapHigh = Math.max(this.heatMapHigh, kv[1]);
-      data.push({
-        date: kv[0],
-        count: kv[1]
-      });
-    }
-    return data;
-  }
-
-  heatMapClassForValue(value) {
-    if (!value || !this.props || !this.props.userTimerLogs) return 'color-github-0';
-    const low = this.heatMapLow;
-    const high = this.heatMapHigh;
-    const groupSize = (high-low) / 4;
-    const g1 = low+groupSize;
-    const g2 = low+groupSize*2;
-    const g3 = low+groupSize*3;
-    const { count } = value;
-    if (count >= low && count < g1) return 'color-github-1';
-    else if (count >= g1 && count < g2) return 'color-github-2';
-    else if (count >= g2 && count < g3) return 'color-github-3';
-    else if (count >= g3 && count <= high) return 'color-github-4';
-  }
-
   renderLoading() {
     return this.props.loading && <Loading />;
   }
@@ -153,12 +106,7 @@ export default class TimerLogView extends React.Component {
           </div>
           <div className='row'>
             <div className='col s12'>
-              <CalendarHeatmap
-                startDate={this.yearStart}
-                endDate={this.today}
-                values={this.heatMapValues()}
-                classForValue={this.heatMapClassForValue}
-              />
+              <TimerLogHeatMap userTimerLogs={this.props.userTimerLogs} />
             </div>
           </div>
 
