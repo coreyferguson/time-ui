@@ -13,11 +13,11 @@ export default function TimerLogLongestStreak(props) {
         <div className="col s12 m6">
           <div className="card-panel center-align">
             <span>
-              <p className='title grey-text'>Current Streak</p>
+              <p className='title grey-text text-darken-2'>Current Streak</p>
               <p className='value'>{streaks.current.count} days</p>
               {
                 streaks.current.count > 0 &&
-                <p className='date-range grey-text'>
+                <p className='date-range grey-text text-darken-2'>
                   {streaks.current.start} to {streaks.current.end}
                 </p>
               }
@@ -29,11 +29,11 @@ export default function TimerLogLongestStreak(props) {
         <div className="col s12 m6">
           <div className="card-panel center-align">
             <span>
-              <p className='title grey-text'>Longest Streak</p>
+              <p className='title grey-text text-darken-2'>Longest Streak</p>
               <p className='value'>{streaks.longest.count} days</p>
               {
                 streaks.longest.count > 0 &&
-                <p className='date-range grey-text'>
+                <p className='date-range grey-text text-darken-2'>
                   {streaks.longest.start} to {streaks.longest.end}
                 </p>
               }

@@ -63,11 +63,6 @@ export default class TimerLogWeekBarChart extends React.Component {
       <div>
         <div className='row'>
           <div className='col s12'>
-            <h5>This Week - Daily Hours</h5>
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col s12'>
             <canvas ref={this.canvas} height='80vh'></canvas>
           </div>
         </div>

@@ -7,6 +7,7 @@ import TimerLogHeatMap from './TimerLogHeatMap';
 import TimerLogWeekBarChart from './TimerLogWeekBarChart';
 import TimerLogLongestStreak from './TimerLogLongestStreak';
 import TimerLogLatestEntries from './TimerLogLatestEntries';
+import TimerLogTotalHours from './TimerLogTotalHours';
 import './TimerLogView.scss';
 
 export default class TimerLogView extends React.Component {
@@ -37,10 +38,25 @@ export default class TimerLogView extends React.Component {
             </h4>
             {this.renderLoading()}
           </div>
+
+          <div className='row'>
+            <div className='col s12'>
+              <h5>Last Year</h5>
+            </div>
+          </div>
           <TimerLogHeatMap userTimerLogs={this.props.userTimerLogs} />
           <TimerLogLongestStreak userTimerLogs={this.props.userTimerLogs} />
+          <TimerLogTotalHours userTimerLogs={this.props.userTimerLogs} />
+
+          <div className='row'>
+            <div className='col s12'>
+              <h5>Last Week</h5>
+            </div>
+          </div>
           <TimerLogWeekBarChart userTimerLogs={this.props.userTimerLogs} />
+
           <TimerLogLatestEntries userTimerLogs={this.props.userTimerLogs} />
+
         </div>
       </Container>
     );

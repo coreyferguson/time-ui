@@ -3,11 +3,12 @@ import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import './heatMapStyles.scss';
 import moment from 'moment';
+import timerLogsToTimeSpent from './timerLogsToTimeSpent';
 
 export default function TimerLogHeatMap(props) {
   const yearStart = new Date(moment().add(-365, 'days').format('YYYY-MM-DD'));
   const today = new Date();
-  const metadata = generateMetadata(props.userTimerLogs);
+  const metadata = timerLogsToTimeSpent(props.userTimerLogs);
   const heatMapClassForValue = heatMapClassForValueGenerator(metadata);
   const humanizeMinutes = minutes => moment.duration(minutes, 'minutes').humanize();
   const titleForValue = value => {
@@ -15,11 +16,6 @@ export default function TimerLogHeatMap(props) {
   };
   return (
     <div>
-      <div className='row'>
-        <div className='col s12'>
-          <h5>Last Year - Heat Map</h5>
-        </div>
-      </div>
       <div className='row'>
         <div className='col s12'>
           <CalendarHeatmap
@@ -34,46 +30,6 @@ export default function TimerLogHeatMap(props) {
       </div>
     </div>
   );
-}
-
-export function generateMetadata(userTimerLogs) {
-  const metadata = {
-    map: new Map(),
-    data: [],
-    userTimerLogs
-  };
-  if (!userTimerLogs || userTimerLogs.length === 0) return metadata;
-  // generate map
-  const m = new Map();
-  let start, stop;
-  userTimerLogs.forEach(log => {
-    if (!start && log.action === 'start') {
-      start = moment(log.time);
-    } else if (start && log.action === 'stop') {
-      stop = moment(log.time);
-      let diff = Math.ceil(moment.duration(stop.diff(start)).as('minutes'));
-      const label = moment(log.time).format('YYYY-MM-DD');
-      m.set(label, m.get(label)+diff || diff);
-      start = undefined;
-    }
-  });
-  metadata.map = m;
-  // generate data + high and low thresholds
-  const data = [];
-  let heatMapLow = Number.MAX_VALUE;
-  let heatMapHigh = Number.MIN_VALUE;
-  for (let kv of m) {
-    heatMapLow = Math.min(heatMapLow, kv[1]);
-    heatMapHigh = Math.max(heatMapHigh, kv[1]);
-    data.push({
-      date: kv[0],
-      count: kv[1]
-    });
-  }
-  metadata.data = data;
-  metadata.low = data.length > 0 ? heatMapLow : undefined;
-  metadata.high = data.length > 0 ? heatMapHigh : undefined;
-  return metadata;
 }
 
 export function heatMapClassForValueGenerator(metadata) {
