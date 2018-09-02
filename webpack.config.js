@@ -36,6 +36,10 @@ const config = {
     historyApiFallback: {
       index: '/index.html'
     }
+  },
+
+  externals: {
+    moment: true
   }
 
 };

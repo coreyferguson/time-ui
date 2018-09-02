@@ -2,6 +2,7 @@
 import React from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import './heatMapStyles.scss';
+import moment from 'moment';
 
 export default function TimerLogHeatMap(props) {
   const yearStart = new Date(moment().add(-365, 'days').format('YYYY-MM-DD'));
@@ -33,13 +34,13 @@ export default function TimerLogHeatMap(props) {
   );
 }
 
-function generateMetadata(userTimerLogs) {
+export function generateMetadata(userTimerLogs) {
   const metadata = {
     map: new Map(),
     data: [],
     userTimerLogs
   };
-  if (!userTimerLogs) return metadata;
+  if (!userTimerLogs || userTimerLogs.length === 0) return metadata;
   // generate map
   const m = new Map();
   let start, stop;
@@ -48,7 +49,7 @@ function generateMetadata(userTimerLogs) {
       start = moment(log.time);
     } else if (start && log.action === 'stop') {
       stop = moment(log.time);
-      let diff = moment.duration(stop.diff(start)).as('minutes');
+      let diff = Math.ceil(moment.duration(stop.diff(start)).as('minutes'));
       const label = moment(log.time).format('YYYY-MM-DD');
       m.set(label, m.get(label)+diff || diff);
       start = undefined;
@@ -68,12 +69,12 @@ function generateMetadata(userTimerLogs) {
     });
   }
   metadata.data = data;
-  metadata.low = heatMapLow;
-  metadata.high = heatMapHigh;
+  metadata.low = data.length > 0 ? heatMapLow : undefined;
+  metadata.high = data.length > 0 ? heatMapHigh : undefined;
   return metadata;
 }
 
-function heatMapClassForValueGenerator(metadata) {
+export function heatMapClassForValueGenerator(metadata) {
   return value => {
     if (!value || !metadata.userTimerLogs) return 'color-0';
     const low = metadata.low;

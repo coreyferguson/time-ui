@@ -96,8 +96,9 @@ function findLongestStreak(setOfActiveDates, fromDate) {
 
 function findCurrentStreak(setOfActiveDates) {
   let day = moment();
-  if (!setOfActiveDates.has(day.format('YYYY-MM-DD'))) return { count: 0 }
   let count = 0;
+  if (setOfActiveDates.has(day.format('YYYY-MM-DD'))) count++;
+  day.add(-1, 'day');
   while (setOfActiveDates.has(day.format('YYYY-MM-DD'))) {
     count++;
     day.add(-1, 'day');

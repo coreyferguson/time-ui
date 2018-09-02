@@ -1,9 +1,9 @@
 
 const path = require('path');
 const webpackModule = require('../config/webpackModule');
-
-// const environment = process.env.NODE_ENV || 'dev';
-// const envConfig = path.resolve(__dirname, `../config/${environment}.json`);
+const environment = process.env.NODE_ENV || 'dev';
+const envConfig = path.resolve(__dirname, `../config/${environment}.json`);
+console.log(envConfig);
 
 module.exports = function(config) {
   config.set({
@@ -63,6 +63,11 @@ module.exports = function(config) {
     webpack: {
       devtool: 'cheap-module-eval-source-map',
       module: webpackModule,
+      resolve: {
+        alias: {
+          config: envConfig
+        }
+      }
       // resolve: {
       //   alias: {
       //     config: envConfig,
