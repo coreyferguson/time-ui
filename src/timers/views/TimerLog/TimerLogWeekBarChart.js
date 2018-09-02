@@ -36,6 +36,16 @@ export default class TimerLogWeekBarChart extends React.Component {
         },
         legend: {
           position: 'none'
+        },
+        tooltips: {
+          callbacks: {
+            label: (toolTipItem, data) => {
+              const { datasetIndex, index } = toolTipItem;
+              const hours = data.datasets[datasetIndex].data[index];
+              const duration = moment.duration(hours, 'hours');
+              return `${duration.get('hours')}h ${duration.get('minutes')}m`;
+            }
+          }
         }
       }
     });
@@ -86,9 +96,10 @@ export default class TimerLogWeekBarChart extends React.Component {
     let current = moment().add(-6, 'days');
     const today = moment();
     while (current && current.isSameOrBefore(today)) {
-      const label = current.format('YYYY-MM-DD');
-      labels.push(label);
-      data.push(m[label] || 0);
+      const key = current.format('YYYY-MM-DD');
+      const barChartLabel = current.format('ddd');
+      labels.push(barChartLabel);
+      data.push(m[key] || 0);
       current.add(1, 'day');
     }
     this.barChart.data.labels = labels;
