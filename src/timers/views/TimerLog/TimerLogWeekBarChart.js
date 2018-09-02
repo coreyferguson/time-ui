@@ -74,7 +74,7 @@ export default class TimerLogWeekBarChart extends React.Component {
       } else if (start && log.action === 'stop') {
         stop = moment(log.time);
         let diff = moment.duration(stop.diff(start)).as('hours');
-        const label = log.time.slice(0, 10);
+        const label = moment(log.time).format('YYYY-MM-DD');
         m[label] = diff;
         start = undefined;
         if (!first) first = moment(label);

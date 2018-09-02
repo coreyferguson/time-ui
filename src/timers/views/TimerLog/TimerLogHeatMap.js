@@ -45,7 +45,7 @@ function generateMetadata(userTimerLogs) {
     } else if (start && log.action === 'stop') {
       stop = moment(log.time);
       let diff = moment.duration(stop.diff(start)).as('minutes');
-      const label = log.time.slice(0, 10);
+      const label = moment(log.time).format('YYYY-MM-DD');
       m.set(label, diff);
       start = undefined;
     }

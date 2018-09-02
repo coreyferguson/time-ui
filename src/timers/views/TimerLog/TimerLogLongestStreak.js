@@ -14,7 +14,14 @@ export default function TimerLogLongestStreak(props) {
           <div className="card-panel center-align">
             <span>
               <p className='title grey-text'>Longest Streak</p>
-              <p className='value'>{streaks.longest} days</p>
+              <p className='value'>{streaks.longest.count} days</p>
+              {
+                (streaks.longest.count > 0)
+                  ? <p className='date-range grey-text'>
+                    {streaks.longest.start} to {streaks.longest.end}
+                  </p>
+                  : <p className='date-range grey-text'> - </p>
+              }
             </span>
           </div>
         </div>
@@ -24,7 +31,14 @@ export default function TimerLogLongestStreak(props) {
           <div className="card-panel center-align">
             <span>
               <p className='title grey-text'>Current Streak</p>
-              <p className='value'>{streaks.current} days</p>
+              <p className='value'>{streaks.current.count} days</p>
+              {
+                (streaks.current.count > 0)
+                  ? <p className='date-range grey-text'>
+                    {streaks.current.start} to {streaks.current.end}
+                  </p>
+                  : <p className='date-range grey-text'> - </p>
+              }
             </span>
           </div>
         </div>
@@ -36,34 +50,62 @@ export default function TimerLogLongestStreak(props) {
 
 function findLongestStreaks(userTimerLogs) {
   const streaks = {
-    longest: 0,
-    current: 0
+    longest: {
+      count: 0
+    },
+    current: {
+      count: 0
+    }
   };
   if (!userTimerLogs) return streaks;
   const set = new Set();
-  userTimerLogs.forEach(log => set.add(moment(log.time).format('YYYY-MM-DD')));
-  // find longest streak
-  let longest = 0;
-  let day = moment(userTimerLogs[0].time);
-  let today = moment();
+  userTimerLogs.forEach(log => {
+    if (log.action === 'start') {
+      set.add(moment(log.time).format('YYYY-MM-DD'));
+    }
+  });
+  streaks.longest = findLongestStreak(set, userTimerLogs[0].time);
+  streaks.current = findCurrentStreak(set);
+  return streaks;
+}
+
+function findLongestStreak(setOfActiveDates, fromDate) {
+  let start = moment(fromDate);
+  let day = moment(fromDate);
   let counter = 0;
+  const longest = {
+    count: 1,
+    start: start.format('YYYY-MM-DD'),
+    end: start.format('YYYY-MM-DD')
+  };
+  const today = moment();
   while (day.isSameOrBefore(today)) {
-    if (set.has(day.format('YYYY-MM-DD'))) {
+    if (setOfActiveDates.has(day.format('YYYY-MM-DD'))) {
       counter++;
+      if (counter > longest.count) {
+        longest.count = counter;
+        longest.start = start.format('YYYY-MM-DD');
+        longest.end = day.format('YYYY-MM-DD');
+      }
     } else {
-      longest = Math.max(longest, counter);
       counter = 0;
+      start = moment(day).add(1, 'day');
     }
     day.add(1, 'day');
   }
-  streaks.longest = longest;
-  // find current streak
-  day = today;
-  counter = 0;
-  while (set.has(day.format('YYYY-MM-DD'))) {
-    day.add(-1, 'day');
-    counter++;
+  return longest;
+}
+
+function findCurrentStreak(setOfActiveDates) {
+  let day = moment();
+  if (!setOfActiveDates.has(day.format('YYYY-MM-DD'))) return { count: 0 }
+  let count = 0;
+  while (setOfActiveDates.has(day.format('YYYY-MM-DD'))) {
+    count++;
   }
-  streaks.current = counter;
-  return streaks;
+  return {
+    count,
+    start: day.add(1, 'day').format('YYYY-MM-DD'),
+    end: moment().format('YYYY-MM-DD')
+  };
 }
