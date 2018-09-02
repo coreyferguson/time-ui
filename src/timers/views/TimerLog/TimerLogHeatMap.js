@@ -9,6 +9,10 @@ export default function TimerLogHeatMap(props) {
   const today = new Date();
   const metadata = generateMetadata(props.userTimerLogs);
   const heatMapClassForValue = heatMapClassForValueGenerator(metadata);
+  const humanizeMinutes = minutes => moment.duration(minutes, 'minutes').humanize();
+  const titleForValue = value => {
+    return value && `${value.date}\n${humanizeMinutes(value.count)}`;
+  };
   return (
     <div>
       <div className='row'>
@@ -24,9 +28,7 @@ export default function TimerLogHeatMap(props) {
             values={metadata.data}
             classForValue={heatMapClassForValue}
             showWeekdayLabels={true}
-            titleForValue={
-              value => value && `${value.date}\n${value.count} minutes`
-            }
+            titleForValue={titleForValue}
           />
         </div>
       </div>
