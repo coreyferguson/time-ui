@@ -93,6 +93,7 @@ export function saveTimer(data) {
       data
     }).then(response => {
       dispatch(saveTimerResponse(data));
+      window.location.href = `/timerLog?id=${data.timerId}`;
     }).catch(err => {
       dispatch(saveTimerError());
     });

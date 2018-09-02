@@ -29,7 +29,7 @@ export default function TimerReducer(state=initialState, action) {
     });
   } else if (action.type === actions.SAVE_TIMER_RESPONSE) {
     return Object.assign({}, state, {
-      loading: false,
+      loading: true, // still loading because we're redirecting to another page
       error: false,
       userTimer: Object.assign({}, state.userTimer, action.userTimer)
     });
