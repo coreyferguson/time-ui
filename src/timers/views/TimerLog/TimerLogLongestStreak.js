@@ -55,7 +55,7 @@ function findLongestStreaks(userTimerLogs) {
       count: 0
     }
   };
-  if (!userTimerLogs) return streaks;
+  if (!userTimerLogs || userTimerLogs.length === 0) return streaks;
   const set = new Set();
   userTimerLogs.forEach(log => {
     if (log.action === 'start') {
@@ -100,6 +100,7 @@ function findCurrentStreak(setOfActiveDates) {
   let count = 0;
   while (setOfActiveDates.has(day.format('YYYY-MM-DD'))) {
     count++;
+    day.add(-1, 'day');
   }
   return {
     count,

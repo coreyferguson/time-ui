@@ -22,6 +22,10 @@ export default function TimerLogHeatMap(props) {
             endDate={today}
             values={metadata.data}
             classForValue={heatMapClassForValue}
+            showWeekdayLabels={true}
+            titleForValue={
+              value => value && `${value.date}\n${value.count} minutes`
+            }
           />
         </div>
       </div>
