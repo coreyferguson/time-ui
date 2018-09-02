@@ -15,31 +15,15 @@ export default class TimerListView extends React.Component {
 
   renderUserTimers() {
     if (!this.props.userTimers) return;
-    const items = this.props.userTimers.map(userTimer => {
-      return (
-        <li key={userTimer.timerId} className='collection-item row'>
-          <div className='col s1'>
-            <a href={`/timerLog?id=${userTimer.timerId}`}>
-              {userTimer.name}
-            </a>
-          </div>
-          <div className='col s11'>
-            <div className='right-align'>
-              <a href={`/timerLog?id=${userTimer.timerId}`}>
-                  <i className="material-icons">history</i>
-              </a>
-              <a href={`/edittimer?id=${userTimer.timerId}`}>
-                  <i className="material-icons">edit</i>
-              </a>
-            </div>
-          </div>
-        </li>
-      );
-    });
+    const items = this.props.userTimers.map(userTimer =>
+      <a key={userTimer.timerId} className='collection-item' href={`/timerLog?id=${userTimer.timerId}`}>
+        {userTimer.name}
+      </a>
+    );
     return (
-      <ul className='collection'>
+      <div className='collection'>
         {items}
-      </ul>
+      </div>
     );
   }
 

@@ -27,7 +27,13 @@ export default class TimerLogView extends React.Component {
       <Container>
         <div>
           <div className='row'>
-            <h4>{this.timerId}</h4>
+            <h4>
+              {this.timerId} &nbsp;
+              <a href={`/edittimer?id=${this.timerId}`}>
+                <i className="material-icons">edit</i>
+              </a>
+            </h4>
+
             {this.renderLoading()}
           </div>
           <TimerLogHeatMap userTimerLogs={this.props.userTimerLogs} />
