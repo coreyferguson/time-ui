@@ -5,7 +5,7 @@ import './heatMapStyles.scss';
 
 export default function TimerLogHeatMap(props) {
   const yearStart = new Date(moment().add(-365, 'days').format('YYYY-MM-DD'));
-  const today = new Date(moment().format('YYYY-MM-DD'));
+  const today = new Date();
   const metadata = generateMetadata(props.userTimerLogs);
   const heatMapClassForValue = heatMapClassForValueGenerator(metadata);
   return (
@@ -50,7 +50,7 @@ function generateMetadata(userTimerLogs) {
       stop = moment(log.time);
       let diff = moment.duration(stop.diff(start)).as('minutes');
       const label = moment(log.time).format('YYYY-MM-DD');
-      m.set(label, diff);
+      m.set(label, m.get(label)+diff || diff);
       start = undefined;
     }
   });
