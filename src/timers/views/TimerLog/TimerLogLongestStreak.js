@@ -9,35 +9,33 @@ export default function TimerLogLongestStreak(props) {
     <div className='timer-log-longest-streak'>
       <div className="row">
 
-        {/* Longest Streak */}
-        <div className="col s6">
-          <div className="card-panel center-align">
-            <span>
-              <p className='title grey-text'>Longest Streak</p>
-              <p className='value'>{streaks.longest.count} days</p>
-              {
-                (streaks.longest.count > 0)
-                  ? <p className='date-range grey-text'>
-                    {streaks.longest.start} to {streaks.longest.end}
-                  </p>
-                  : <p className='date-range grey-text'> - </p>
-              }
-            </span>
-          </div>
-        </div>
-
         {/* Current Streak */}
-        <div className="col s6">
+        <div className="col s12 m6">
           <div className="card-panel center-align">
             <span>
               <p className='title grey-text'>Current Streak</p>
               <p className='value'>{streaks.current.count} days</p>
               {
-                (streaks.current.count > 0)
-                  ? <p className='date-range grey-text'>
-                    {streaks.current.start} to {streaks.current.end}
-                  </p>
-                  : <p className='date-range grey-text'> - </p>
+                streaks.current.count > 0 &&
+                <p className='date-range grey-text'>
+                  {streaks.current.start} to {streaks.current.end}
+                </p>
+              }
+            </span>
+          </div>
+        </div>
+
+        {/* Longest Streak */}
+        <div className="col s12 m6">
+          <div className="card-panel center-align">
+            <span>
+              <p className='title grey-text'>Longest Streak</p>
+              <p className='value'>{streaks.longest.count} days</p>
+              {
+                streaks.longest.count > 0 &&
+                <p className='date-range grey-text'>
+                  {streaks.longest.start} to {streaks.longest.end}
+                </p>
               }
             </span>
           </div>
