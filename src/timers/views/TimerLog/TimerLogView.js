@@ -8,12 +8,17 @@ import TimerLogWeekBarChart from './TimerLogWeekBarChart';
 import TimerLogLongestStreak from './TimerLogLongestStreak';
 import TimerLogLatestEntries from './TimerLogLatestEntries';
 import TimerLogTotalHours from './TimerLogTotalHours';
+import UnknownServerError from '../../../Error/UnknownServerError';
 import './TimerLogView.scss';
 
 export default class TimerLogView extends React.Component {
 
   constructor(props) {
     super(props);
+  }
+
+  renderError() {
+    return this.props.error && <UnknownServerError />;
   }
 
   renderLoading() {
@@ -29,6 +34,7 @@ export default class TimerLogView extends React.Component {
     return (
       <Container>
         <div className='timer-log'>
+          {this.renderError()}
           <div className='row'>
             <h4 className='title'>
               <span className='timer-id'>{this.timerId}</span>

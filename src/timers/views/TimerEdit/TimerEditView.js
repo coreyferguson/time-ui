@@ -3,6 +3,7 @@ import React from 'react';
 import Container from '../../../container/views/Container';
 import PropTypes from 'prop-types';
 import Loading from '../../../Loading/IndeterminateLinear';
+import UnknownServerError from '../../../Error/UnknownServerError';
 
 export default class TimerEditView extends React.Component {
 
@@ -58,8 +59,12 @@ export default class TimerEditView extends React.Component {
     });
   }
 
+  renderError() {
+    return this.props.error && <UnknownServerError />;
+  }
+
   renderLoading() {
-    return this.props.loading && <Loading />
+    return this.props.loading && <Loading />;
   }
 
   renderEditTimer() {
@@ -98,7 +103,8 @@ export default class TimerEditView extends React.Component {
     return (
       <Container>
         <div>
-          <h1>Timer</h1>
+          {this.renderError()}
+          <h4>Timer</h4>
           {this.renderLoading()}
           {this.renderEditTimer()}
         </div>

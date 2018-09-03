@@ -1,6 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import './NavView.scss';
 
 export default class NavView extends React.Component {
 
@@ -10,11 +11,10 @@ export default class NavView extends React.Component {
 
   loggedInView() {
     return this.props.authenticated && (
-      <div>
+      <div className='session-container'>
         <li><a onClick={this.props.onLogOut}>Logout</a></li>
         <li><img
-          style={{height: 40, marginTop: 10, marginRight: 10}}
-          className='circle responsive-img'
+          className='picture circle responsive-img'
           src={this.props.picture} />
         </li>
       </div>
@@ -23,7 +23,9 @@ export default class NavView extends React.Component {
 
   loggedOutView() {
     return !this.props.authenticated && (
-      <li><a onClick={this.props.onLogIn}>Login</a></li>
+      <div className='session-container'>
+        <li><a onClick={this.props.onLogIn}>Login</a></li>
+      </div>
     );
   }
 
