@@ -42,7 +42,7 @@ export default class TimerLogNow extends React.Component {
     const timeRunning = moment().diff(lastStartTime);
     const d = moment.duration(timeRunning, 'milliseconds');
     d.add(this.staticTimeSpentToday);
-    this.setState({ timeRunning: formatDuration(d, true) });
+    this.setState({ timeRunning: formatDuration(d) });
   }
 
   renderRunningTimer() {
@@ -65,7 +65,7 @@ export default class TimerLogNow extends React.Component {
       <div className="card-panel center-align">
         <span>
           <p className='title grey-text text-darken-2'>Time Spent Today</p>
-          <p className='value'>{formatDuration(this.staticTimeSpentToday, false)}</p>
+          <p className='value'>{formatDuration(this.staticTimeSpentToday)}</p>
         </span>
       </div>
     );
@@ -93,14 +93,14 @@ function format(date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
-function formatDuration(d, includeSeconds) {
+function formatDuration(d) {
   const h = d.get('hours');
   const m = d.get('minutes');
   const s = d.get('seconds');
   const output =
     ((h > 0) ? `${h}h ` : '') +        // hours
     (h > 0 || m > 0 ? `${m}m ` : '') + // minutes
-    (includeSeconds ? `${s}s` : '');   // seconds
+    ((h === 0 && m === 0) ? `${s}s` : '');   // seconds
   return output;
 }
 
