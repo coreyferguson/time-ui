@@ -1,5 +1,5 @@
 
-import './timerLogTotalHours.scss';
+import './TimerLogTotalHours.scss';
 import timerLogsToTimeSpent from './timerLogsToTimeSpent';
 
 export default function TimerLogTotalHours(props) {

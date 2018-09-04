@@ -1,5 +1,5 @@
 
-import './timerLogLongestStreak.scss';
+import './TimerLogLongestStreak.scss';
 
 export default function TimerLogLongestStreak(props) {
 
