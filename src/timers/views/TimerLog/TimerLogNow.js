@@ -100,7 +100,7 @@ function formatDuration(d) {
   const output =
     ((h > 0) ? `${h}h ` : '') +        // hours
     (h > 0 || m > 0 ? `${m}m ` : '') + // minutes
-    ((h === 0 && m === 0) ? `${s}s` : '');   // seconds
+    ((h === 0 && m === 0) || s !== 0 ? `${s}s` : '');   // seconds
   return output;
 }
 
