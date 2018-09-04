@@ -52,8 +52,7 @@ export default class TimerLogWeekBarChart extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.userTimerLogs &&
-        prevProps.userTimerLogs !== this.props.userTimerLogs) {
+    if (prevProps.userTimerLogs !== this.props.userTimerLogs) {
       this.updateBarChart();
     }
   }
@@ -73,7 +72,8 @@ export default class TimerLogWeekBarChart extends React.Component {
   updateBarChart() {
     const m = {};
     let first;
-    this.props.userTimerLogs.forEach(log => {
+    const userTimerLogs = this.props.userTimerLogs || [];
+    userTimerLogs.forEach(log => {
       if (!start && log.action === 'start') {
         start = moment(log.time);
       } else if (start && log.action === 'stop') {
