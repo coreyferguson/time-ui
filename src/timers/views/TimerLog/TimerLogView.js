@@ -16,14 +16,25 @@ export default class TimerLogView extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleStartTimer = this.handleStartTimer.bind(this);
+    this.handleStopTimer = this.handleStopTimer.bind(this);
+  }
+
+  handleStartTimer() {
+    this.props.onStartTimer(this.timerId);
+  }
+
+  handleStopTimer() {
+    this.props.onStopTimer(this.timerId);
   }
 
   renderError() {
-    return this.props.error && <UnknownServerError />;
+    return (this.props.timerLogs.error || this.props.timer.error) &&
+      <UnknownServerError />;
   }
 
   renderLoading() {
-    return this.props.loading && <Loading />;
+    return (this.props.timerLogs.loading || this.props.timer.loading) && <Loading />;
   }
 
   componentDidMount() {
@@ -46,25 +57,30 @@ export default class TimerLogView extends React.Component {
             {this.renderLoading()}
           </div>
 
-          <TimerLogNow userTimerLogs={this.props.userTimerLogs} />
-          <TimerLogLongestStreak userTimerLogs={this.props.userTimerLogs} />
+          <TimerLogNow
+            userTimerLogs={this.props.timerLogs.userTimerLogs}
+            onStartTimer={this.handleStartTimer}
+            onStopTimer={this.handleStopTimer}
+            isControlsShown={!this.props.timerLogs.loading}
+            isControlsEnabled={!this.props.timer.loading} />
+          <TimerLogLongestStreak userTimerLogs={this.props.timerLogs.userTimerLogs} />
 
           <div className='row'>
             <div className='col s12'>
               <h5>Last Year</h5>
             </div>
           </div>
-          <TimerLogHeatMap userTimerLogs={this.props.userTimerLogs} />
-          <TimerLogTotalHours userTimerLogs={this.props.userTimerLogs} />
+          <TimerLogHeatMap userTimerLogs={this.props.timerLogs.userTimerLogs} />
+          <TimerLogTotalHours userTimerLogs={this.props.timerLogs.userTimerLogs} />
 
           <div className='row'>
             <div className='col s12'>
               <h5>Last Week</h5>
             </div>
           </div>
-          <TimerLogWeekBarChart userTimerLogs={this.props.userTimerLogs} />
+          <TimerLogWeekBarChart userTimerLogs={this.props.timerLogs.userTimerLogs} />
 
-          <TimerLogLatestEntries userTimerLogs={this.props.userTimerLogs} />
+          <TimerLogLatestEntries userTimerLogs={this.props.timerLogs.userTimerLogs} />
 
         </div>
       </Container>
@@ -84,5 +100,7 @@ export default class TimerLogView extends React.Component {
 }
 
 TimerLogView.propTypes = {
-  onMount: PropTypes.func.isRequired
+  onMount: PropTypes.func.isRequired,
+  onStartTimer: PropTypes.func.isRequired,
+  onStopTimer: PropTypes.func.isRequired
 };

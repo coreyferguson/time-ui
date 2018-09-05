@@ -1,11 +1,19 @@
 
 import { connect } from 'react-redux'
-import { getUserTimerLog } from '../../state/timerActionCreators';
+import { getUserTimerLog, startTimer, stopTimer } from '../../state/timerActionCreators';
 
-const mapStateToProps = ({ timerLogs }) => timerLogs;
+const mapStateToProps = ({ timer, timerLogs }) => {
+  return { timer, timerLogs };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
+    onStartTimer: timerId => {
+      dispatch(startTimer(timerId));
+    },
+    onStopTimer: timerId => {
+      dispatch(stopTimer(timerId));
+    },
     onMount: timerId => {
       dispatch(getUserTimerLog(timerId));
     }

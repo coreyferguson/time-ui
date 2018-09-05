@@ -129,3 +129,63 @@ export function getUserTimerLog(timerId) {
     });
   };
 }
+
+function startTimerRequest() {
+  return { type: actions.START_TIMER_REQUEST };
+}
+
+function startTimerResponse() {
+  return { type: actions.START_TIMER_RESPONSE };
+}
+
+function startTimerError() {
+  return { type: actions.START_TIMER_ERROR };
+}
+
+export function startTimer(timerId) {
+  return dispatch => {
+    dispatch(startTimerRequest());
+    axios({
+      url: `https://time-api.overattribution.com/timers/${timerId}/start`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    }).then(() => {
+      dispatch(startTimerResponse());
+      dispatch(getUserTimerLog(timerId));
+    }).catch(err => {
+      dispatch(startTimerError());
+    });
+  };
+}
+
+function stopTimerRequest() {
+  return { type: actions.STOP_TIMER_REQUEST };
+}
+
+function stopTimerResponse() {
+  return { type: actions.STOP_TIMER_RESPONSE };
+}
+
+function stopTimerError() {
+  return { type: actions.STOP_TIMER_ERROR };
+}
+
+export function stopTimer(timerId) {
+  return dispatch => {
+    dispatch(stopTimerRequest());
+    axios({
+      url: `https://time-api.overattribution.com/timers/${timerId}/stop`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+      }
+    }).then(() => {
+      dispatch(stopTimerResponse());
+      dispatch(getUserTimerLog(timerId));
+    }).catch(err => {
+      dispatch(stopTimerError());
+    });
+  };
+}

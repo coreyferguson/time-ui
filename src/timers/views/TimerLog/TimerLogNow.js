@@ -2,6 +2,7 @@
 import React from 'react';
 import timerLogsToTimeSpent from './timerLogsToTimeSpent';
 import './TimerLogNow.scss';
+import PropTypes from 'prop-types';
 
 export default class TimerLogNow extends React.Component {
 
@@ -11,6 +12,8 @@ export default class TimerLogNow extends React.Component {
     this.state = {
       timeRunning: undefined
     };
+    this.handleStartTimer = this.handleStartTimer.bind(this);
+    this.handleStopTimer = this.handleStopTimer.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +33,14 @@ export default class TimerLogNow extends React.Component {
     }
   }
 
+  handleStartTimer() {
+    this.props.onStartTimer();
+  }
+
+  handleStopTimer() {
+    this.props.onStopTimer();
+  }
+
   recurseRefresh() {
     this.timeout = setTimeout(this.recurseRefresh.bind(this), 1000);
     this.refresh();
@@ -47,12 +58,21 @@ export default class TimerLogNow extends React.Component {
 
   renderRunningTimer() {
     const logs = this.props.userTimerLogs;
+    const enabled = this.props.isControlsEnabled ? '' : 'disabled';
     return (
       isTimerRunning(logs) &&
       <div className="card-panel center-align">
         <span>
           <p className='title grey-text text-darken-2'>Timer Currently Running</p>
           <p className='value'>{this.state.timeRunning}</p>
+          {
+            this.props.isControlsShown &&
+            <a
+                className={`btn ${enabled}`}
+                onClick={this.handleStopTimer}>
+              Stop Timer
+            </a>
+          }
         </span>
       </div>
     );
@@ -60,12 +80,20 @@ export default class TimerLogNow extends React.Component {
 
   renderStoppedTimer() {
     const logs = this.props.userTimerLogs;
+    const enabled = this.props.isControlsEnabled ? '' : 'disabled';
     return (
       !isTimerRunning(logs) &&
       <div className="card-panel center-align">
         <span>
           <p className='title grey-text text-darken-2'>Time Spent Today</p>
           <p className='value'>{formatDuration(this.staticTimeSpentToday)}</p>
+          {
+            this.props.isControlsShown &&
+            <a className={`btn ${enabled}`}
+                onClick={this.handleStartTimer}>
+              Start Timer
+            </a>
+          }
         </span>
       </div>
     );
@@ -83,6 +111,14 @@ export default class TimerLogNow extends React.Component {
       </div>
     );
   }
+}
+
+TimerLogNow.propTypes = {
+  // TODO: userTimerLogs : PropTypes.shape({...})
+  onStartTimer: PropTypes.func.isRequired,
+  onStopTimer: PropTypes.func.isRequired,
+  isControlsShown: PropTypes.bool.isRequired,
+  isControlsEnabled: PropTypes.bool.isRequired
 }
 
 function isTimerRunning(logs) {
