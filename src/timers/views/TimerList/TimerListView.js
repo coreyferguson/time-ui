@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IndeterminateLinear from '../../../Loading/IndeterminateLinear';
+import './TimerList.scss';
 
 export default class TimerListView extends React.Component {
 
@@ -48,7 +49,7 @@ export default class TimerListView extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='timer-list'>
         {this.renderHeader()}
         {this.renderLoading()}
         {this.renderUserTimers()}
