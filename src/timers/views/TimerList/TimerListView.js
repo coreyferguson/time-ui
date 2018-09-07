@@ -2,12 +2,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import IndeterminateLinear from '../../../Loading/IndeterminateLinear';
+import UnknownServerError from '../../../Error/UnknownServerError';
 import './TimerList.scss';
 
 export default class TimerListView extends React.Component {
 
   componentDidMount() {
     if (this.props.onMount) this.props.onMount();
+  }
+
+  renderError() {
+    return this.props.error && <UnknownServerError />;
   }
 
   renderLoading() {
@@ -51,6 +56,7 @@ export default class TimerListView extends React.Component {
     return (
       <div className='timer-list'>
         {this.renderHeader()}
+        {this.renderError()}
         {this.renderLoading()}
         {this.renderUserTimers()}
       </div>

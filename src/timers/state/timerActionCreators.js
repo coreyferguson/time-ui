@@ -24,7 +24,7 @@ export function getUserTimers() {
       method: 'GET',
       url: 'https://time-api.overattribution.com/timers',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
       }
     }).then(response => {
       dispatch(getUserTimersResponse(response.data.userTimers));
@@ -56,7 +56,7 @@ export function getUserTimer(timerId) {
       method: 'GET',
       url: 'https://time-api.overattribution.com/timers',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
       }
     }).then(response => {
       const filtered = response.data.userTimers
@@ -88,7 +88,7 @@ export function saveTimer(data) {
       method: 'POST',
       url: 'https://time-api.overattribution.com/timers',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
       },
       data
     }).then(response => {
@@ -120,7 +120,7 @@ export function getUserTimerLog(timerId) {
       url: `https://time-api.overattribution.com/timers/${timerId}/logs`,
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
       }
     }).then(response => {
       dispatch(getUserTimerLogResponse(response.data.userTimerLogs));
@@ -149,7 +149,7 @@ export function startTimer(timerId) {
       url: `https://time-api.overattribution.com/timers/${timerId}/start`,
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
       }
     }).then(() => {
       dispatch(startTimerResponse());
@@ -179,7 +179,7 @@ export function stopTimer(timerId) {
       url: `https://time-api.overattribution.com/timers/${timerId}/stop`,
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
       }
     }).then(() => {
       dispatch(stopTimerResponse());

@@ -42,7 +42,10 @@ export function establishSession() {
         localStorage.setItem('oauth_user_picture', authResult.idTokenPayload.picture);
         dispatch(getSession());
         const redirectUri = localStorage.getItem('oauth_redirect_uri');
-        if (redirectUri) window.location.href = redirectUri;
+        if (redirectUri) {
+          window.history.replaceState({}, null, redirectUri);
+          window.location.reload();
+        }
       } else {
         dispatch(logOut());
       }
