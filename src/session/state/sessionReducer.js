@@ -8,7 +8,7 @@ const initialState = {
 export default function SessionReducer(state=initialState, action) {
   if (action.type === actions.GET_SESSION) {
     return Object.assign({}, state, {
-      authenticated: !!action.accessTokenExpiry,
+      authenticated: action.authenticated,
       name: action.name,
       picture: action.picture
     });

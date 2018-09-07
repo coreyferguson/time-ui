@@ -2,6 +2,7 @@
 import actions from './sessionActions';
 import auth0 from 'auth0-js';
 import config from 'config';
+import moment from 'moment';
 
 var webAuth = new auth0.WebAuth({
   domain: 'overattribution.auth0.com',
@@ -12,13 +13,19 @@ var webAuth = new auth0.WebAuth({
 });
 
 export function getSession() {
-  return {
-    type: actions.GET_SESSION,
-    authenticated: isAuthenticated(),
-    accessTokenExpiry: localStorage.getItem('expires_at'),
-    name: localStorage.getItem('user_name'),
-    picture: localStorage.getItem('user_picture')
-  };
+  return dispatch => {
+    if (isExpired()) {
+      dispatch(logOut());
+    } else {
+      dispatch({
+        type: actions.GET_SESSION,
+        authenticated: isAuthenticated(),
+        accessTokenExpiry: localStorage.getItem('oauth_expires_at'),
+        name: localStorage.getItem('oauth_user_name'),
+        picture: localStorage.getItem('oauth_user_picture')
+      });
+    }
+  }
 }
 
 export function establishSession() {
@@ -28,13 +35,13 @@ export function establishSession() {
         const expiresAt = JSON.stringify(
           authResult.expiresIn * 1000 + new Date().getTime()
         );
-        localStorage.setItem('access_token', authResult.accessToken);
-        localStorage.setItem('id_token', authResult.idToken);
-        localStorage.setItem('expires_at', expiresAt);
-        localStorage.setItem('user_name', authResult.idTokenPayload.given_name);
-        localStorage.setItem('user_picture', authResult.idTokenPayload.picture);
+        localStorage.setItem('oauth_access_token', authResult.accessToken);
+        localStorage.setItem('oauth_id_token', authResult.idToken);
+        localStorage.setItem('oauth_expires_at', expiresAt);
+        localStorage.setItem('oauth_user_name', authResult.idTokenPayload.given_name);
+        localStorage.setItem('oauth_user_picture', authResult.idTokenPayload.picture);
         dispatch(getSession());
-        const redirectUri = localStorage.getItem('auth_redirect_uri');
+        const redirectUri = localStorage.getItem('oauth_redirect_uri');
         if (redirectUri) window.location.href = redirectUri;
       } else {
         dispatch(logOut());
@@ -45,6 +52,7 @@ export function establishSession() {
 
 export function logOut() {
   clearLocalStorage();
+  window.location.href = '/';
   return {
     type: actions.LOG_OUT
   };
@@ -52,7 +60,7 @@ export function logOut() {
 
 export function logIn() {
   clearLocalStorage();
-  localStorage.setItem('auth_redirect_uri', window.location.href);
+  localStorage.setItem('oauth_redirect_uri', window.location.href);
   webAuth.authorize({ redirectUri: config.oauth_callback_uri });
   return {
     type: actions.LOG_IN
@@ -60,18 +68,27 @@ export function logIn() {
 }
 
 function isAuthenticated() {
-  const expiry = localStorage.getItem('expires_at');
-  if (!expiry) return false;
+  return !!localStorage.getItem('oauth_access_token');
+}
+
+/**
+ * Local storage variables exist but session is now expired.
+ */
+function isExpired() {
+  const expiryString = localStorage.getItem('oauth_expires_at');
+  if (!expiryString) return false;
   // Check whether the current time is past the
   // Access Token's expiry time
-  return new Date().getTime() < JSON.parse(expiry);
+  const expiry = moment(parseInt(expiryString, 10));
+  const now = moment();
+  return now.isAfter(expiry);
 }
 
 function clearLocalStorage() {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('id_token');
-  localStorage.removeItem('expires_at');
-  localStorage.removeItem('user_name');
-  localStorage.removeItem('user_picture');
-  localStorage.removeItem('auth_redirect_uri');
+  localStorage.removeItem('oauth_access_token');
+  localStorage.removeItem('oauth_id_token');
+  localStorage.removeItem('oauth_expires_at');
+  localStorage.removeItem('oauth_user_name');
+  localStorage.removeItem('oauth_user_picture');
+  localStorage.removeItem('oauth_redirect_uri');
 }

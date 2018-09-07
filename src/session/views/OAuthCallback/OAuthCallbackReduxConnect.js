@@ -2,7 +2,9 @@
 import { connect } from 'react-redux'
 import { establishSession } from '../../state/sessionActionCreators';
 
-const mapStateToProps = () => {};
+const mapStateToProps = () => {
+  return {};
+};
 
 const mapDispatchToProps = dispatch => {
   return {
