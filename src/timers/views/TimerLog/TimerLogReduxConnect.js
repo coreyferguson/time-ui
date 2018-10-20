@@ -1,6 +1,12 @@
 
 import { connect } from 'react-redux'
-import { getUserTimerLog, startTimer, stopTimer } from '../../state/timerActionCreators';
+import {
+  getUserTimerLog,
+  startTimer,
+  stopTimer,
+  deleteLog,
+  editLog
+} from '../../state/timerActionCreators';
 
 const mapStateToProps = ({ timer, timerLogs }) => {
   return { timer, timerLogs };
@@ -16,6 +22,12 @@ const mapDispatchToProps = dispatch => {
     },
     onMount: timerId => {
       dispatch(getUserTimerLog(timerId));
+    },
+    onDeleteLog: (timerId, time) => {
+      dispatch(deleteLog(timerId, time));
+    },
+    onEditLog: (log, newTime) => {
+      dispatch(editLog(log, newTime));
     }
   };
 };

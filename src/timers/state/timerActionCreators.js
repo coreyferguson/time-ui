@@ -189,3 +189,99 @@ export function stopTimer(timerId) {
     });
   };
 }
+
+function deleteLogRequest(time) {
+  return { type: actions.DELETE_TIMER_LOG_REQUEST, time };
+}
+
+function deleteLogResponse() {
+  return { type: actions.DELETE_TIMER_LOG_RESPONSE };
+}
+
+function deleteLogError() {
+  return { type: actions.DELETE_TIMER_LOG_ERROR };
+}
+
+function deleteLogXhr(timerId, time) {
+  return axios({
+    url: `https://time-api.overattribution.com/timers/${timerId}/logs`,
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
+    },
+    data: { time }
+  });
+}
+
+export function deleteLog(timerId, time) {
+  return dispatch => {
+    dispatch(deleteLogRequest(time));
+    deleteLogXhr(timerId, time).then(() => {
+      dispatch(deleteLogResponse());
+    }).catch(err => {
+      dispatch(deleteLogError());
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    });
+  };
+}
+
+function saveLogRequest(time, action) {
+  return { type: actions.SAVE_TIMER_LOG_REQUEST, time, action };
+}
+
+function saveLogResponse() {
+  return { type: actions.SAVE_TIMER_LOG_RESPONSE };
+}
+
+function saveLogError() {
+  return { type: actions.SAVE_TIMER_LOG_ERROR };
+}
+
+function saveLogXhr(timerId, time, action) {
+  return axios({
+    url: `https://time-api.overattribution.com/timers/${timerId}/logs`,
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('oauth_access_token')}`
+    },
+    data: { time, action }
+  });
+}
+
+export function saveLog(timerId, time, action) {
+  return dispatch => {
+    dispatch(saveLogRequest(time, action));
+    saveLogXhr(timerId, time, action).then(() => {
+      dispatch(saveLogResponse());
+    }).catch(err => {
+      dispatch(saveLogError());
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    });
+  };
+}
+
+function editLogRequest(log, newTime) {
+  return { type: actions.EDIT_TIMER_LOG_REQUEST, log, newTime };
+}
+
+function editLogResponse() {
+  return { type: actions.EDIT_TIMER_LOG_RESPONSE };
+}
+
+function editLogError() {
+  return { type: actions.EDIT_TIMER_LOG_ERROR };
+}
+
+export function editLog(log, newTime) {
+  newTime = new Date(newTime).toISOString();
+  return dispatch => {
+    dispatch(editLogRequest(log, newTime));
+    saveLogXhr(log.timerId, newTime, log.action).then(() => {
+      return deleteLogXhr(log.timerId, log.time);
+    }).then(() => {
+      dispatch(editLogResponse());
+    }).catch(err => {
+      dispatch(editLogError());
+    });
+  };
+}

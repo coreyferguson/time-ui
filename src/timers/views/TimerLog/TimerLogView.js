@@ -18,6 +18,8 @@ export default class TimerLogView extends React.Component {
     super(props);
     this.handleStartTimer = this.handleStartTimer.bind(this);
     this.handleStopTimer = this.handleStopTimer.bind(this);
+    this.handleDeleteLog = this.handleDeleteLog.bind(this);
+    this.handleEditLog = this.handleEditLog.bind(this);
   }
 
   handleStartTimer() {
@@ -26,6 +28,14 @@ export default class TimerLogView extends React.Component {
 
   handleStopTimer() {
     this.props.onStopTimer(this.timerId);
+  }
+
+  handleDeleteLog(time) {
+    this.props.onDeleteLog(this.timerId, time)
+  }
+
+  handleEditLog(log, newTime) {
+    this.props.onEditLog(log, newTime)
   }
 
   renderError() {
@@ -80,7 +90,10 @@ export default class TimerLogView extends React.Component {
           </div>
           <TimerLogWeekBarChart userTimerLogs={this.props.timerLogs.userTimerLogs} />
 
-          <TimerLogLatestEntries userTimerLogs={this.props.timerLogs.userTimerLogs} />
+          <TimerLogLatestEntries
+            userTimerLogs={this.props.timerLogs.userTimerLogs}
+            onDeleteLog={this.handleDeleteLog}
+            onEditLog={this.handleEditLog} />
 
         </div>
       </Container>
@@ -102,5 +115,7 @@ export default class TimerLogView extends React.Component {
 TimerLogView.propTypes = {
   onMount: PropTypes.func.isRequired,
   onStartTimer: PropTypes.func.isRequired,
-  onStopTimer: PropTypes.func.isRequired
+  onStopTimer: PropTypes.func.isRequired,
+  onDeleteLog: PropTypes.func.isRequired,
+  onEditLog: PropTypes.func.isRequired
 };
