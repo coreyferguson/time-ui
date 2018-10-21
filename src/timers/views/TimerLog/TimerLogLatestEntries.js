@@ -17,7 +17,7 @@ export default class TimerLogLatestEntries extends React.Component {
     return (
       <div className='timer-log-latest-entries row'>
         <div className='col s12'>
-          <h5>Last 10 Logs</h5>
+          <h5>Last 20 Logs</h5>
           <table className='striped'>
             <thead>
               <tr>
@@ -30,7 +30,7 @@ export default class TimerLogLatestEntries extends React.Component {
             <tbody>
               {
                 this.props.userTimerLogs &&
-                this.props.userTimerLogs.slice(-10).reverse().map(entry =>
+                this.props.userTimerLogs.slice(-20).reverse().map(entry =>
                   <tr key={entry.time}>
                     <td>
                       {
