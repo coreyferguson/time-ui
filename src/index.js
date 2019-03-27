@@ -5,6 +5,8 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
 
 import Home from './Home';
 import PageNotFound from './PageNotFound';
@@ -17,6 +19,10 @@ import reducers from './reducers';
 
 import './styles.scss';
 
+const client = new ApolloClient({
+  uri: 'https://time-api-dev.overattribution.com/graphql'
+});
+
 const store = createStore(
   reducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
@@ -25,17 +31,19 @@ const store = createStore(
 
 // Initialize UI
 ReactDOM.render(
-  <Provider store={store}>
-    <Router>
-      <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/oauth_callback' component={OAuthCallback} />
-        <Route path='/addtimer' component={TimerAdd} />
-        <Route path='/edittimer' component={TimerEdit} />
-        <Route path='/timerlog' component={TimerLog} />
-        <Route component={PageNotFound} />
-      </Switch>
-    </Router>
-  </Provider>,
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/oauth_callback' component={OAuthCallback} />
+          <Route path='/addtimer' component={TimerAdd} />
+          <Route path='/edittimer' component={TimerEdit} />
+          <Route path='/timerlog' component={TimerLog} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </Router>
+    </Provider>
+  </ApolloProvider>,
   document.getElementById('reactContainer')
 );
