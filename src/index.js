@@ -7,6 +7,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import thunkMiddleware from 'redux-thunk';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
+import config from 'config';
 
 import Home from './Home';
 import PageNotFound from './PageNotFound';
@@ -20,7 +21,15 @@ import reducers from './reducers';
 import './styles.scss';
 
 const client = new ApolloClient({
-  uri: 'https://time-api-dev.overattribution.com/graphql'
+  uri: config.graphql_uri,
+  request: operation => {
+    const token = localStorage.getItem('oauth_access_token');
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    });
+  }
 });
 
 const store = createStore(

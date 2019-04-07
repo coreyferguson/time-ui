@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Container from '../container/views/Container';
-import TimerList from '../timers/views/TimerList';
+import TimerList from '../timers/TimerList';
 import ExampleStartStopTimer from './img/ExampleStartStopTimer.png';
 import ExampleTimeChartYear from './img/ExampleTimeChartYear.png';
 import ExampleLongestStreak from './img/ExampleLongestStreak.png';

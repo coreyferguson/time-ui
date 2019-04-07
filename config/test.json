@@ -1,4 +1,5 @@
 {
   "env": "test",
-  "oauth_callback_uri": "https://local.time.overattribution.com:8080/oauth_callback"
+  "graphql_uri": "https://domain.com/graphql",
+  "oauth_callback_uri": "https://domain.com/oauth_callback"
 }
