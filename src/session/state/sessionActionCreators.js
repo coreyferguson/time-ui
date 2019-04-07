@@ -19,6 +19,7 @@ export function getSession() {
     } else {
       dispatch({
         type: actions.GET_SESSION,
+        // isReturningUser:
         authenticated: isAuthenticated(),
         accessTokenExpiry: localStorage.getItem('oauth_expires_at'),
         name: localStorage.getItem('oauth_user_name'),
@@ -40,6 +41,7 @@ export function establishSession() {
         localStorage.setItem('oauth_expires_at', expiresAt);
         localStorage.setItem('oauth_user_name', authResult.idTokenPayload.given_name);
         localStorage.setItem('oauth_user_picture', authResult.idTokenPayload.picture);
+        localStorage.setItem('is_recognized_user', true);
         dispatch(getSession());
         const redirectUri = localStorage.getItem('oauth_redirect_uri');
         if (redirectUri) {

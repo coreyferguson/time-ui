@@ -2,18 +2,22 @@
 import actions from './sessionActions';
 
 const initialState = {
-  authenticated: false
+  isRecognized: false,
+  isAuthenticated: false
 };
 
 export default function SessionReducer(state=initialState, action) {
-  if (action.type === actions.GET_SESSION) {
-    return Object.assign({}, state, {
-      authenticated: action.authenticated,
+  if (action.type === actions.UNRECOGNIZED_USER) {
+    return { isRecognized: false, isAuthenticated: false };
+  } else if (action.type === actions.UNAUTHENTICATED) {
+    return { isRecognized: true, isAuthenticated: false };
+  } else if (action.type === actions.AUTHENTICATED) {
+    return {
+      isRecognized: true,
+      isAuthenticated: true,
       name: action.name,
       picture: action.picture
-    });
-  } else if (action.type === actions.LOG_OUT) {
-    return Object.assign({}, initialState);
+    };
   } else {
     return state;
   }
