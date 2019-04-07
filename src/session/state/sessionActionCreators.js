@@ -14,14 +14,13 @@ var webAuth = new auth0.WebAuth({
 
 export function getSession() {
   return dispatch => {
-    if (isExpired()) {
-      dispatch(logOut());
+    if (!isRecognizedUser()) {
+      dispatch({ type: actions.UNRECOGNIZED_USER });
+    } else if (isExpired()) {
+      dispatch({ type: actions.UNAUTHENTICATED });
     } else {
       dispatch({
-        type: actions.GET_SESSION,
-        // isReturningUser:
-        authenticated: isAuthenticated(),
-        accessTokenExpiry: localStorage.getItem('oauth_expires_at'),
+        type: actions.AUTHENTICATED,
         name: localStorage.getItem('oauth_user_name'),
         picture: localStorage.getItem('oauth_user_picture')
       });
@@ -30,34 +29,35 @@ export function getSession() {
 }
 
 export function establishSession() {
-  return dispatch => {
-    webAuth.parseHash(function(err, authResult) {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        const expiresAt = JSON.stringify(
-          authResult.expiresIn * 1000 + new Date().getTime()
-        );
-        localStorage.setItem('oauth_access_token', authResult.accessToken);
-        localStorage.setItem('oauth_id_token', authResult.idToken);
-        localStorage.setItem('oauth_expires_at', expiresAt);
-        localStorage.setItem('oauth_user_name', authResult.idTokenPayload.given_name);
-        localStorage.setItem('oauth_user_picture', authResult.idTokenPayload.picture);
-        localStorage.setItem('is_recognized_user', true);
-        dispatch(getSession());
-        const redirectUri = localStorage.getItem('oauth_redirect_uri');
-        if (redirectUri) {
-          window.history.replaceState({}, null, redirectUri);
-          window.location.reload();
-        }
-      } else {
-        dispatch(logOut());
-      }
-    });
-  };
+  return dispatch => webAuth.parseHash(
+    (err, authResult) => _parseHash(err, authResult, dispatch));
+}
+
+export function _parseHash(err, authResult, dispatch) {
+  if (authResult && authResult.accessToken && authResult.idToken) {
+    const expiresAt = JSON.stringify(
+      authResult.expiresIn * 1000 + new Date().getTime()
+    );
+    localStorage.setItem('oauth_access_token', authResult.accessToken);
+    localStorage.setItem('oauth_id_token', authResult.idToken);
+    localStorage.setItem('oauth_expires_at', expiresAt);
+    localStorage.setItem('oauth_user_name', authResult.idTokenPayload.given_name);
+    localStorage.setItem('oauth_user_picture', authResult.idTokenPayload.picture);
+    localStorage.setItem('is_recognized_user', true);
+    dispatch(getSession());
+    const redirectUri = localStorage.getItem('oauth_redirect_uri');
+    if (config.env !== 'test' && redirectUri) {
+      window.history.replaceState({}, null, redirectUri);
+      window.location.reload();
+    }
+  } else {
+    dispatch(logOut());
+  }
 }
 
 export function logOut() {
   clearLocalStorage();
-  window.location.href = '/';
+  if (config.env !== 'test') window.location.href = '/';
   return {
     type: actions.LOG_OUT
   };
@@ -77,11 +77,19 @@ function isAuthenticated() {
 }
 
 /**
+ * Unrecognized users are those without any session credentials
+ * (even expired credentials).
+ */
+function isRecognizedUser() {
+  return !!localStorage.getItem('is_recognized_user');
+}
+
+/**
  * Local storage variables exist but session is now expired.
  */
 function isExpired() {
   const expiryString = localStorage.getItem('oauth_expires_at');
-  if (!expiryString) return false;
+  if (!expiryString) return true;
   // Check whether the current time is past the
   // Access Token's expiry time
   const expiry = moment(parseInt(expiryString, 10));

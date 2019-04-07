@@ -1,4 +1,4 @@
 {
-  "env": "dev",
+  "env": "test",
   "oauth_callback_uri": "https://local.time.overattribution.com:8080/oauth_callback"
 }

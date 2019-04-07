@@ -5,8 +5,8 @@
   "scripts": {
     "dist": "NODE_ENV=prod node scripts/dist.js",
     "start": "./node_modules/.bin/webpack-dev-server --open -d",
-    "test": "node_modules/.bin/karma start test/karma.conf.js --single-run",
-    "watch": "node_modules/.bin/karma start test/karma.conf.js --no-single-run",
+    "test": "NODE_ENV=test node_modules/.bin/karma start test/karma.conf.js --single-run",
+    "watch": "NODE_ENV=test node_modules/.bin/karma start test/karma.conf.js --no-single-run",
     "webpack": "./node_modules/.bin/webpack"
   },
   "author": "Corey Ferguson <corey.t.ferguson@gmail.com>",

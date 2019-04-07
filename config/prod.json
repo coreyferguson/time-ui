@@ -1,3 +1,4 @@
 {
+  "env": "prod",
   "oauth_callback_uri": "https://time.overattribution.com/oauth_callback"
 }

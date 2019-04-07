@@ -3,7 +3,6 @@ const path = require('path');
 const webpackModule = require('../config/webpackModule');
 const environment = process.env.NODE_ENV || 'dev';
 const envConfig = path.resolve(__dirname, `../config/${environment}.json`);
-console.log(envConfig);
 
 module.exports = function(config) {
   config.set({
@@ -68,20 +67,6 @@ module.exports = function(config) {
           config: envConfig
         }
       }
-      // resolve: {
-      //   alias: {
-      //     config: envConfig,
-      //   },
-      // },
-      // externals: {
-      //   'react/addons': true,                      // pre-existing at enzyme 2.8.0
-      //   'react/lib/ExecutionEnvironment': true,    // pre-existing at enzyme 2.8.0
-      //   'react/lib/ReactContext': true,            // pre-existing at enzyme 2.8.0
-      //   'react-dom/test-utils': true,
-      //   'react-test-renderer/shallow': true,
-      //   'axios': true,
-      //   'moment': true
-      // }
     }
 
   });
