@@ -10,7 +10,7 @@ export default class NavView extends React.Component {
   }
 
   loggedInView() {
-    return this.props.authenticated && (
+    return this.props.isAuthenticated && (
       <div className='session-container'>
         <li><a onClick={this.props.onLogOut}>Logout</a></li>
         <li><img
@@ -22,7 +22,7 @@ export default class NavView extends React.Component {
   }
 
   loggedOutView() {
-    return !this.props.authenticated && (
+    return !this.props.isAuthenticated && (
       <div className='session-container'>
         <li><a onClick={this.props.onLogIn}>Login</a></li>
       </div>

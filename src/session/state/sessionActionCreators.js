@@ -18,6 +18,7 @@ export function getSession() {
       dispatch({ type: actions.UNRECOGNIZED_USER });
     } else if (isExpired()) {
       dispatch({ type: actions.UNAUTHENTICATED });
+      dispatch(logIn());
     } else {
       dispatch({
         type: actions.AUTHENTICATED,
@@ -56,7 +57,8 @@ export function _parseHash(err, authResult, dispatch) {
 }
 
 export function logOut() {
-  clearLocalStorage();
+  deleteRecognizedUserFromLocalStorage();
+  deleteOAuthPropertiesFromLocalStorage();
   if (config.env !== 'test') window.location.href = '/';
   return {
     type: actions.LOG_OUT
@@ -64,9 +66,10 @@ export function logOut() {
 }
 
 export function logIn() {
-  clearLocalStorage();
+  deleteOAuthPropertiesFromLocalStorage();
   localStorage.setItem('oauth_redirect_uri', window.location.href);
-  webAuth.authorize({ redirectUri: config.oauth_callback_uri });
+  if (config.env !== 'test')
+    webAuth.authorize({ redirectUri: config.oauth_callback_uri });
   return {
     type: actions.LOG_IN
   };
@@ -97,7 +100,11 @@ function isExpired() {
   return now.isAfter(expiry);
 }
 
-function clearLocalStorage() {
+function deleteRecognizedUserFromLocalStorage() {
+  localStorage.removeItem('is_recognized_user');
+}
+
+function deleteOAuthPropertiesFromLocalStorage() {
   localStorage.removeItem('oauth_access_token');
   localStorage.removeItem('oauth_id_token');
   localStorage.removeItem('oauth_expires_at');

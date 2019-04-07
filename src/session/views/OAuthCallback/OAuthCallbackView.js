@@ -1,7 +1,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from '../../../container/views/Container';
 
 export default class OAuthCallbackView extends React.Component {
 
@@ -11,9 +10,7 @@ export default class OAuthCallbackView extends React.Component {
 
   render() {
     return (
-      <Container>
-        <p>Establishing Session...</p>
-      </Container>
+      <p>Establishing Session...</p>
     );
   }
 

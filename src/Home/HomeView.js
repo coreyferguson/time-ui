@@ -7,8 +7,8 @@ export default function HomeView(props) {
   return (
     <Container>
       <div>
-        {props.authenticated && <TimerList />}
-        {!props.authenticated && <h1>Log in to see your timers</h1>}
+        {props.isAuthenticated && <TimerList />}
+        {!props.isAuthenticated && <h1>Log in to see your timers</h1>}
       </div>
     </Container>
   );
