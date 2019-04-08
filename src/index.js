@@ -14,7 +14,7 @@ import PageNotFound from './PageNotFound';
 import OAuthCallback from './session/views/OAuthCallback';
 import TimerAdd from './timers/views/TimerAdd';
 import TimerEdit from './timers/views/TimerEdit';
-import TimerLog from './timers/views/TimerLog';
+import TimerLog from './timers/TimerLog'
 
 import reducers from './reducers';
 
